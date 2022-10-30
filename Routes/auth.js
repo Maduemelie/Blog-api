@@ -4,9 +4,9 @@ const bcrypt = require('bcrypt')
 
 userRouter.post('/signup', async(req, res)=>{
   try {
-    const {email, firstName, lastName, password} = req.body
+    const {email, firstName, lastName, password,userName} = req.body
 
-      if (!(email && firstName && lastName && password)){
+      if (!(email && firstName && lastName && password && userName)){
         res.status(400).send("All Input Is Required")
       }
     const olderUser = await users.findOne({email})
@@ -17,6 +17,7 @@ if(olderUser){
       const newUser = new users({
         firstName,
         lastName,
+        userName,
         email: email.toLowerCase(),
         password: hashpassword
       })

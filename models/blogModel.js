@@ -14,10 +14,15 @@ const blogSchema = new Schema({
         type: String,
         required: true
     },
+    userName: {
+        type: String,
+        required: true,
+        unique: true
+    },
     state: {
         type: String,
         required: true,
-        enum: ['draft', 'published'], default: "draft"
+        enum: ['draft', 'published'], default: "draft" 
     },
     readCount: {
         type: Number,
@@ -38,6 +43,6 @@ const blogSchema = new Schema({
 
 }, { timestamps: true })
 
-const blogs = mongoose.model("blogs", userSchema)
+const blogs = mongoose.model("blogs", blogSchema)
 
 module.exports = blogs
