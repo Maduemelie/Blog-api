@@ -17,7 +17,7 @@ const blogSchema = new Schema({
     userName: {
         type: String,
         required: true,
-        unique: true
+
     },
     state: {
         type: String,
@@ -25,13 +25,13 @@ const blogSchema = new Schema({
         enum: ['draft', 'published'], default: "draft" 
     },
     readCount: {
-        type: Number,
+        type: Number, default: 0
     },
     readingTime: {
         type: String,
     },
     tags: {
-        type: [String], 
+        type: [String],
     },
     body: {
         type: String,
