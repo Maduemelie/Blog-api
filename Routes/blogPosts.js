@@ -162,26 +162,26 @@ blogRouter.put('/:id', isAuthenticated, async(req, res) =>{
 
 
 //GETTING PERSONAL BLOG
-blogRouter.get('/:userid', isAuthenticated, async(req, res)=>{
-    try {
-        const user= req.user
-        // const user = users.findById(id)
-        // console.log(id)
-        // console.log(user)
+// blogRouter.get('/:userid', isAuthenticated, async(req, res)=>{
+//     try {
+//         const user= req.user
+//         // const user = users.findById(id)
+//         // console.log(id)
+//         // console.log(user)
 
-        const page = parseInt(req.query.page) || 1
-        const limit = parseInt(req.query.limit) || 20
-        const skip = (page - 1) * limit
-        const userBlogs = await blogs.find({user:user._id})
-          .skip(skip)
-            .limit(limit).populate('user', { firstName: 1, lastName: 1, _id: 1 })
-         return res.status(200).json(userBlogs)
-    } catch (error) {
+//         const page = parseInt(req.query.page) || 1
+//         const limit = parseInt(req.query.limit) || 20
+//         const skip = (page - 1) * limit
+//         const userBlogs = await blogs.find({user:user._id})
+//           .skip(skip)
+//             .limit(limit).populate('user', { firstName: 1, lastName: 1, _id: 1 })
+//          return res.status(200).json(userBlogs)
+//     } catch (error) {
 
-            return  res.status(500).json(error.message)
-    }
+//             return  res.status(500).json(error.message)
+//     }
 
-})
+// })
 
 // DELETE A BLOG
 blogRouter.delete('/:id', isAuthenticated, async(req, res) =>{
