@@ -13,10 +13,6 @@ const blogSchema = new Schema({
     author: {
         type: String,
         required: true
-    },
-    userName: {
-        type: String,
-        required: true,
 
     },
     state: {
@@ -36,6 +32,10 @@ const blogSchema = new Schema({
     body: {
         type: String,
         required: true
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
     }
 
 
