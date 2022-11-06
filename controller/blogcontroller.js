@@ -21,8 +21,9 @@ const createBlog =  async (req, res) => {
             readingTime,
             user: user._id,
         })
-        const blog = await newBlog.save()
-        user.blogs = user.blogs.concat(newBlog._id);
+        const blogPost = await newBlog.save()
+        user.blog = user.blog.concat(blogPost._id);
+        await user.save()
         res.status(200).json({ blog })
 
     } catch (error) {
@@ -66,7 +67,7 @@ const getAllBlogs = async (req, res) => {
         //Filtering
       const excludedFields = ['page', 'sort', 'limit', 'fields']
       excludedFields.forEach((el)=> delete queryObj[el])
-        let query = await blogs.find(queryObj)
+        let query =  blogs.find(queryObj)
         //Sorting
         if (req.query.sort) {
             const sortBy = req.query.sort.split(",").join(" ")
