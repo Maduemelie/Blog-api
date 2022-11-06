@@ -1,25 +1,30 @@
 const jwt = require('jsonwebtoken')
+const users = require("../models/usersModel")
 
 
 
 
-const isAuthenticated = async (req, res, next) =>{
-    const token = req.cookies.jwt
+//Protecting routes
 
-    if (!token) {
-        return res.status(401).json('no token found')
+const isAuthenticated = (async (req, res, next) => {
+    let token;
+    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+        token = req.headers.authorization.split(" ")[1]
     }
-    jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
-        if (err) {
-            return res.status(403).json('Invalid Token')
-        }
-        req.user = {
-            id: decodedToken.id
-        }
+    if (!token) {
+        return res.status(401).json("Unauthorized!. Please login")
+    }
 
-   })
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await users.findById(decodedToken.id)
+    if (!user) {
+        return res.status(401).json('authorization not found')
+    }
+    req.user = user
     next()
-}
+
+})
+
 module.exports = isAuthenticated
       
 

@@ -22,10 +22,11 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  blog: {
+  blog:
+  [ {
     type: mongoose.Schema.Types.ObjectId,
     ref: "blogs",
-  }
+  }]
 
   
 }, { timestamps: true })

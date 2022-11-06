@@ -24,7 +24,7 @@ const createBlog =  async (req, res) => {
         const blogPost = await newBlog.save()
         user.blog = user.blog.concat(blogPost._id);
         await user.save()
-        res.status(200).json({ blog })
+        res.status(200).json({ blogPost })
 
     } catch (error) {
         res.status(500).json(error.message)

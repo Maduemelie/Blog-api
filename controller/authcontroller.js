@@ -3,6 +3,19 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
+
+
+// Define a function to creat a token
+
+const signToken = (id) =>{
+    return jwt.sign({id},process.env.JWT_SECRET, {expiresIn: "1h"})
+}
+
+
+    // jwt.sign(payload, process.env.JWT_SECRET, {
+    //     expiresIn: '1h'
+    // })
+
 const signup = async (req, res) => {
     try {
         const { email, firstName, lastName, password } = req.body
@@ -22,10 +35,10 @@ const signup = async (req, res) => {
             password: hashpassword
         })
 
-
+        const token = signToken(newUser._id)
         const user = await newUser.save()
 
-        res.status(200).json(user)
+        res.status(200).json({status: "success", token, user})
 
     } catch (error) {
         res.status(500).json(error.message)
@@ -47,13 +60,8 @@ const login = async (req, res) => {
         if (!match) {
             return res.status(400).json("Wrong Details, Try Again")
         }
-        const payload = {
-            id: user._id
-        }
-        const token = jwt.sign(payload, process.env.JWT_SECRET, {
-            expiresIn: '1h'
-        })
-        res.cookie("jwt", token, { httpOnly: true })
+       
+       const token = signToken(user._id)
         const { password, ...others } = user._doc
         res.status(200).json({ others, token })
 
@@ -62,5 +70,6 @@ const login = async (req, res) => {
 
     }
 }
+
 
 module.exports = {signup, login}
