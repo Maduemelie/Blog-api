@@ -66,13 +66,13 @@ const getAllBlogs = async (req, res) => {
         //Filtering
       const excludedFields = ['page', 'sort', 'limit', 'fields']
       excludedFields.forEach((el)=> delete queryObj[el])
-        let blogPost = await blogs.find(queryObj)
+        let query = await blogs.find(queryObj)
         //Sorting
         if (req.query.sort) {
-            const sortBy = req.query.sort.split(',').join(' ')
-            blogPost = blogPost.sort(sortBy)
+            const sortBy = req.query.sort.split(",").join(" ")
+            query = query.sort(sortBy)
         } else {
-            blogPost = blogPost.sort("-createdAt")
+           query =query.sort("-createdAt")
         }
 
         //Pagination
@@ -87,11 +87,11 @@ const getAllBlogs = async (req, res) => {
             if (skip >= numOfArticle) throw new Error("page does not exist")
 
         }
-        blogPost = blogPost.skip(skip).limit(limit)
+        query = query.skip(skip).limit(limit)
 
 
         const publishedBlogs = await blogs
-            .find(blogPost)
+            .find(query)
             .where({ state: "published" })
             .populate('user', { firstName: 1, lastName: 1, _id: 1 })
 
