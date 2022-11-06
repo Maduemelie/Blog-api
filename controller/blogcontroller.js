@@ -94,7 +94,7 @@ const getAllBlogs = async (req, res) => {
         const publishedBlogs = await blogs
             .find(query)
             .where({ state: "published" })
-            .populate('user', { firstName: 1, lastName: 1, _id: 1 })
+            .populate("user", { firstName: 1, lastName: 1, _id: 1 })
 
             res.status(200).json(publishedBlogs)
     } catch (error) {
@@ -113,6 +113,7 @@ const updateBlog = async (req, res) => {
 
 
         const blog = await blogs.findById(id)
+        
 
         if (blog.user._id.toString() === user.id) {
             try {
