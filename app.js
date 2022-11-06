@@ -1,6 +1,6 @@
 const express = require('express');
-const userRouter = require('./Routes/auth')
-const blogRouter = require('./Routes/blogPosts')
+const userRouter = require('./Routes/authroute')
+const blogRouter = require('./Routes/blogroute')
 const connectToDb = require('./db/mongooseDb')
 const cookieParser = require('cookie-parser')
 
