@@ -61,28 +61,16 @@ const getABlog = async (req, res) => {
 
 const getAllBlogs = async (req, res) => {
     try {
-        const { author, title, tags, sort } = req.query
+        const queryObj ={ ...req.query}
 
         //Filtering
-        const findQuery = {
-            state: "published"
-        }
-        if (author) {
-            findQuery.author = author
-
-        }
-        if (title) {
-            findQuery.title = title
-        }
-        if (tags) {
-            findQuery.tags = tags
-        }
-
-        let blogPost = await blogs.find(findQuery)
+      const excludedFields = ['page', 'sort', 'limit', 'fields']
+      excludedFields.forEach((el)=> delete queryObj[el])
+        let blogPost = await blogs.find(queryObj)
         //Sorting
-        if (sort) {
-            const sortby = sort.split(',').join(' ')
-            blogPost = blogPost.sort(sortby)
+        if (req.query.sort) {
+            const sortBy = req.query.sort.split(',').join(' ')
+            blogPost = blogPost.sort(sortBy)
         } else {
             blogPost = blogPost.sort("-createdAt")
         }
@@ -92,7 +80,7 @@ const getAllBlogs = async (req, res) => {
         const limit = parseInt(req.query.limit) || 20
         const skip = (page - 1) * limit
 
-        if (page) {
+        if (req.query.page) {
             const numOfArticle = await blogs
                 .countDocuments()
                 .where({ state: 'published' })
