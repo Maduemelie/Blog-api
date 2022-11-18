@@ -12,10 +12,8 @@ const signToken = (id) =>{
 }
 
 
-    // jwt.sign(payload, process.env.JWT_SECRET, {
-    //     expiresIn: '1h'
-    // })
-
+  
+//SIGN UP NEW USERS
 const signup = async (req, res) => {
     try {
         const { email, firstName, lastName, password } = req.body
@@ -46,7 +44,7 @@ const signup = async (req, res) => {
     }
 }
 
-
+// LOGIN USERS
 const login = async (req, res) => {
     try {
         const user = await users.findOne({ email: req.body.email })
@@ -58,7 +56,7 @@ const login = async (req, res) => {
         const match = await bcrypt.compare(req.body.password, user.password)
 
         if (!match) {
-            return res.status(400).json("Wrong Details, Try Again")
+            return res.status(400).json("Wrong password, Try Again")
         }
        
        const token = signToken(user._id)

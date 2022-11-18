@@ -40,7 +40,7 @@ const getReadingTime = (body) => {
     return ` ${readingTime} Minute Read Time`
 }
 
-//GET A BLOG
+//GET A BLOG WITH ITS ID 
 const getABlog = async (req, res) => {
 
 
@@ -59,16 +59,16 @@ const getABlog = async (req, res) => {
     }
 
 }
-
+//Get All Blogs
 const getAllBlogs = async (req, res) => {
     try {
         const queryObj ={ ...req.query}
 
-        //Filtering
+        //FILTERING
       const excludedFields = ['page', 'sort', 'limit', 'fields']
       excludedFields.forEach((el)=> delete queryObj[el])
         let query =  blogs.find(queryObj)
-        //Sorting
+        //SORTING 
         if (req.query.sort) {
             const sortBy = req.query.sort.split(",").join(" ")
             query = query.sort(sortBy)
@@ -76,7 +76,7 @@ const getAllBlogs = async (req, res) => {
            query =query.sort("-createdAt")
         }
 
-        //Pagination
+        //PAGINATION
         const page = parseInt(req.query.page) || 1
         const limit = parseInt(req.query.limit) || 20
         const skip = (page - 1) * limit
@@ -137,7 +137,7 @@ const updateBlog = async (req, res) => {
 
     }
 }
-
+//GETTING PERSONAL BLOGS 
 const getUserBlogs = async (req, res) => {
     try {
         const userid = req.user.id
@@ -168,7 +168,8 @@ const deleteBlog = async (req, res) => {
         if (blog.user._id.toString() === user.id) {
             try {
                 await blogs.deleteOne()
-                res.status(200).json("Deleted")
+                res.status(200).json({"status": "success",
+    "message": "blog deleted successfully"})
 
             } catch (error) {
                 res.status(500).json(error)

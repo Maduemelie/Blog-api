@@ -4,7 +4,7 @@ const users = require("../models/usersModel")
 
 
 
-//Protecting routes
+//PROTECTING ROUTES
 
 const isAuthenticated = (async (req, res, next) => {
     let token;
